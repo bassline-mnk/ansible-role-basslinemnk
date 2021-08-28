@@ -51,17 +51,17 @@ LOG_FILE=$(mktemp)
 print_info "Writing diagnostic logs to $LOG_FILE"
 
 {
-  echo "TinyPilot log dump"
-  echo "https://tinypilotkvm.com"
+  echo "BasslineMnk log dump"
+  echo "https://basslinemnkkvm.com"
   printf "Timestamp: %s" "$(date --iso-8601=seconds)"
   printf "\n\n"
 } >> "${LOG_FILE}"
 
 echo "Software versions" >> "${LOG_FILE}"
 
-print_info "Checking TinyPilot version..."
-cd /opt/tinypilot && \
-  printf "TinyPilot version: %s %s\n" "$(git describe --tags --always)" "$(git rev-parse --short HEAD)" >> "${LOG_FILE}"
+print_info "Checking BasslineMnk version..."
+cd /opt/basslinemnk && \
+  printf "BasslineMnk version: %s %s\n" "$(git describe --tags --always)" "$(git rev-parse --short HEAD)" >> "${LOG_FILE}"
 
 print_info "Checking uStreamer version..."
 cd /opt/ustreamer && \
@@ -73,7 +73,7 @@ print_info "Checking OS version..."
   printf "\n"
 } >> "${LOG_FILE}"
 
-echo "TinyPilot state" >> "${LOG_FILE}"
+echo "BasslineMnk state" >> "${LOG_FILE}"
 
 print_info "Checking temperature..."
 printf "%s\n" "$(vcgencmd measure_temp)" >> "${LOG_FILE}"
@@ -88,23 +88,23 @@ print_info "Checking for voltage issues..."
   printf "\n"
 } >> "${LOG_FILE}"
 
-print_info "Checking TinyPilot configuration..."
+print_info "Checking BasslineMnk configuration..."
 {
-  printf "TinyPilot configuration\n"
-  cat /lib/systemd/system/tinypilot.service
+  printf "BasslineMnk configuration\n"
+  cat /lib/systemd/system/basslinemnk.service
   printf "\n"
 } >> "${LOG_FILE}"
 
-print_info "Checking TinyPilot logs..."
+print_info "Checking BasslineMnk logs..."
 {
-  printf "TinyPilot logs\n"
-  sudo journalctl -u tinypilot | tail -n 200
+  printf "BasslineMnk logs\n"
+  sudo journalctl -u basslinemnk | tail -n 200
   printf "\n"
 } >> "${LOG_FILE}"
 
-print_info "Checking TinyPilot updater logs..."
+print_info "Checking BasslineMnk updater logs..."
 {
-  printf "TinyPilot update logs\n"
+  printf "BasslineMnk update logs\n"
   "$(dirname "$0")/read-update-log" | tail -n 200
   printf "\n"
 } >> "${LOG_FILE}"
@@ -151,7 +151,7 @@ if [ "$FLAG_SILENT_MODE" != "true" ]; then
     fi
 fi
 
-readonly LOG_UPLOAD_URL="https://logs.tinypilotkvm.com"
+readonly LOG_UPLOAD_URL="https://logs.basslinemnkkvm.com"
 
 if [ "$SHOULD_UPLOAD" == "true" ]; then
     URL=$(curl --silent --show-error --form "_=@${LOG_FILE}" "${LOG_UPLOAD_URL}")

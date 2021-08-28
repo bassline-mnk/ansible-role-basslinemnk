@@ -10,44 +10,44 @@
 - name: install HID USB gadget
   import_tasks: install_usb_gadget.yml
 
-- name: collect TinyPilot required apt packages on all systems
+- name: collect BasslineMnk required apt packages on all systems
   set_fact:
-    tinypilot_packages:
+    basslinemnk_packages:
       - git
       - python3-venv
       - sudo
 
-- name: collect Debian and Ubuntu specific TinyPilot required apt packages
+- name: collect Debian and Ubuntu specific BasslineMnk required apt packages
   set_fact:
-    tinypilot_packages: "{{ tinypilot_packages }} + ['python-pip']"
+    basslinemnk_packages: "{{ basslinemnk_packages }} + ['python-pip']"
   when: ansible_distribution == 'Debian' or (ansible_distribution == 'Ubuntu' and ansible_distribution_version != '20.04')
 
-- name: collect Ubuntu 20.04 specific TinyPilot required apt packages
+- name: collect Ubuntu 20.04 specific BasslineMnk required apt packages
   set_fact:
-    tinypilot_packages: "{{ tinypilot_packages }} + ['python3-pip']"
+    basslinemnk_packages: "{{ basslinemnk_packages }} + ['python3-pip']"
   when: ansible_distribution == 'Ubuntu' and ansible_distribution_version == '20.04'
 
-- name: install TinyPilot pre-requisite packages
+- name: install BasslineMnk pre-requisite packages
   apt:
-    name: "{{ tinypilot_packages }}"
+    name: "{{ basslinemnk_packages }}"
     state: present
 
-- name: create tinypilot group
+- name: create basslinemnk group
   group:
-    name: "{{ tinypilot_group }}"
+    name: "{{ basslinemnk_group }}"
     state: present
 
-- name: create tinypilot user
+- name: create basslinemnk user
   user:
-    name: "{{ tinypilot_user }}"
-    group: "{{ tinypilot_group }}"
+    name: "{{ basslinemnk_user }}"
+    group: "{{ basslinemnk_group }}"
     system: yes
     create_home: yes
 
 - name: copy admin scripts
   copy:
     src: "{{ item }}"
-    dest: "{{ tinypilot_privileged_dir }}/{{ item }}"
+    dest: "{{ basslinemnk_privileged_dir }}/{{ item }}"
     owner: root
     group: root
     mode: '0755'
@@ -62,36 +62,36 @@
   set_fact:
     sudo_paths:
       - /sbin/shutdown
-      - /usr/sbin/service tinypilot-updater start
-      - "{{ tinypilot_privileged_dir }}/change-hostname"
-      - "{{ tinypilot_privileged_dir }}/collect-debug-logs"
-      - "{{ tinypilot_privileged_dir }}/read-update-log"
-      - "{{ tinypilot_privileged_dir }}/update"
-      - "{{ tinypilot_privileged_dir }}/update-video-settings"
+      - /usr/sbin/service basslinemnk-updater start
+      - "{{ basslinemnk_privileged_dir }}/change-hostname"
+      - "{{ basslinemnk_privileged_dir }}/collect-debug-logs"
+      - "{{ basslinemnk_privileged_dir }}/read-update-log"
+      - "{{ basslinemnk_privileged_dir }}/update"
+      - "{{ basslinemnk_privileged_dir }}/update-video-settings"
 
-- name: enable tinypilot to execute a whitelist of commands as sudo
+- name: enable basslinemnk to execute a whitelist of commands as sudo
   lineinfile:
     dest: /etc/sudoers
     state: present
-    line: "{{ tinypilot_user }} ALL=(ALL) NOPASSWD: {{ sudo_paths | join(', ') }}"
-    regexp: "^{{ tinypilot_user }}"
+    line: "{{ basslinemnk_user }} ALL=(ALL) NOPASSWD: {{ sudo_paths | join(', ') }}"
+    regexp: "^{{ basslinemnk_user }}"
     validate: sudo /usr/sbin/visudo -cf %s
 
-- name: create TinyPilot folder
+- name: create BasslineMnk folder
   file:
-    path: "{{ tinypilot_dir }}"
+    path: "{{ basslinemnk_dir }}"
     state: directory
-    owner: "{{ tinypilot_user }}"
-    group: "{{ tinypilot_group }}"
+    owner: "{{ basslinemnk_user }}"
+    group: "{{ basslinemnk_group }}"
 
-- name: get TinyPilot repo
+- name: get BasslineMnk repo
   git:
-    repo: "{{ tinypilot_repo }}"
-    dest: "{{ tinypilot_dir }}"
-    version: "{{ tinypilot_repo_branch }}"
+    repo: "{{ basslinemnk_repo }}"
+    dest: "{{ basslinemnk_dir }}"
+    version: "{{ basslinemnk_repo_branch }}"
     accept_hostkey: yes
   notify:
-    - restart TinyPilot service
+    - restart BasslineMnk service
 
 - name: find absolute path to python3
   shell: realpath $(which python3)
@@ -102,61 +102,61 @@
   set_fact:
     python3_abs_path: "{{ realpath_python3.stdout }}"
 
-- name: create TinyPilot virtualenv
+- name: create BasslineMnk virtualenv
   pip:
-    virtualenv: "{{ tinypilot_dir }}/venv"
+    virtualenv: "{{ basslinemnk_dir }}/venv"
     virtualenv_command: "{{ python3_abs_path }} -m venv venv"
-    requirements: "{{ tinypilot_dir }}/requirements.txt"
-    extra_args: "{{ tinypilot_pip_args }}"
+    requirements: "{{ basslinemnk_dir }}/requirements.txt"
+    extra_args: "{{ basslinemnk_pip_args }}"
   notify:
-    - restart TinyPilot service
+    - restart BasslineMnk service
 
-- name: create TinyPilot app settings
+- name: create BasslineMnk app settings
   template:
-    src: tinypilot-app-settings.cfg.j2
-    dest: "{{ tinypilot_app_settings_file }}"
-    owner: "{{ tinypilot_user }}"
-    group: "{{ tinypilot_group }}"
+    src: basslinemnk-app-settings.cfg.j2
+    dest: "{{ basslinemnk_app_settings_file }}"
+    owner: "{{ basslinemnk_user }}"
+    group: "{{ basslinemnk_group }}"
   notify:
-    - restart TinyPilot service
+    - restart BasslineMnk service
   tags:
     - app-settings
 
-- name: fix TinyPilot folder permissions
+- name: fix BasslineMnk folder permissions
   file:
-    path: "{{ tinypilot_dir }}"
+    path: "{{ basslinemnk_dir }}"
     state: directory
-    owner: "{{ tinypilot_user }}"
-    group: "{{ tinypilot_group }}"
+    owner: "{{ basslinemnk_user }}"
+    group: "{{ basslinemnk_group }}"
     recurse: yes
   # TODO: Figure out why this fails idempotency otherwise.
   tags:
     - molecule-idempotence-notest
 
-- name: install TinyPilot as a service
+- name: install BasslineMnk as a service
   template:
-    src: tinypilot.systemd.j2
-    dest: /lib/systemd/system/tinypilot.service
+    src: basslinemnk.systemd.j2
+    dest: /lib/systemd/system/basslinemnk.service
     owner: root
     group: root
     mode: '0644'
   notify:
-    - reload TinyPilot systemd config
-    - restart TinyPilot service
+    - reload BasslineMnk systemd config
+    - restart BasslineMnk service
   tags:
     - systemd-config
 
-- name: enable systemd TinyPilot service file
+- name: enable systemd BasslineMnk service file
   systemd:
-    name: tinypilot
+    name: basslinemnk
     enabled: yes
 
-- name: install tinypilot-updater as a service
+- name: install basslinemnk-updater as a service
   template:
-    src: tinypilot-updater.systemd.j2
-    dest: /lib/systemd/system/tinypilot-updater.service
+    src: basslinemnk-updater.systemd.j2
+    dest: /lib/systemd/system/basslinemnk-updater.service
     owner: root
     group: root
     mode: '0644'
   notify:
-    - reload tinypilot updater systemd config
+    - reload basslinemnk updater systemd config

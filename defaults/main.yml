@@ -1,18 +1,18 @@
 ---
-tinypilot_group: tinypilot
-tinypilot_dir: /opt/tinypilot
-tinypilot_privileged_dir: /opt/tinypilot-privileged
-tinypilot_repo: https://github.com/tiny-pilot/tinypilot.git
-tinypilot_repo_branch: master
-# Port on which TinyPilot frontend listens (accessible from other hosts on the
+basslinemnk_group: basslinemnk
+basslinemnk_dir: /opt/basslinemnk
+basslinemnk_privileged_dir: /opt/basslinemnk-privileged
+basslinemnk_repo: https://github.com/bassline-mnk/basslinemnk.git
+basslinemnk_repo_branch: master
+# Port on which BasslineMnk frontend listens (accessible from other hosts on the
 # network).
-tinypilot_external_port: 80
-tinypilot_interface: '127.0.0.1'
-# Port on which TinyPilot's backend listens (accessible only from
-# tinypilot_interface).
-tinypilot_port: 8000
-tinypilot_keyboard_interface: /dev/hidg0
-tinypilot_mouse_interface: /dev/hidg1
-tinypilot_enable_debug_logging: no
-tinypilot_pip_args: ""
-tinypilot_app_settings_file: "{{ tinypilot_dir }}/app_settings.cfg"
+basslinemnk_external_port: 80
+basslinemnk_interface: '127.0.0.1'
+# Port on which BasslineMnk's backend listens (accessible only from
+# basslinemnk_interface).
+basslinemnk_port: 8000
+basslinemnk_keyboard_interface: /dev/hidg0
+basslinemnk_mouse_interface: /dev/hidg1
+basslinemnk_enable_debug_logging: no
+basslinemnk_pip_args: ""
+basslinemnk_app_settings_file: "{{ basslinemnk_dir }}/app_settings.cfg"

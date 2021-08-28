@@ -2,6 +2,6 @@
 - name: Converge
   hosts: all
   tasks:
-    - name: "Include ansible-role-tinypilot"
+    - name: "Include ansible-role-basslinemnk"
       include_role:
-        name: "ansible-role-tinypilot"
+        name: "ansible-role-basslinemnk"

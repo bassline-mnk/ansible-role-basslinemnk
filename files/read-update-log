@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Reads the tinypilot-updater systemd log and cuts out the junk content.
+# Reads the basslinemnk-updater systemd log and cuts out the junk content.
 
 # Exit on first error.
 set -e
@@ -8,6 +8,6 @@ set -e
 # Treat undefined environment variables as errors.
 set -u
 
-sudo journalctl -u tinypilot-updater \
-  | grep tinypilot-update-svc \
-  | sed -E 's/^.*tinypilot-update-svc\[[0-9]+\]: //g'
+sudo journalctl -u basslinemnk-updater \
+  | grep basslinemnk-update-svc \
+  | sed -E 's/^.*basslinemnk-update-svc\[[0-9]+\]: //g'

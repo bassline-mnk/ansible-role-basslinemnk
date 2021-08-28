@@ -1,28 +1,28 @@
-# Ansible Role: TinyPilot
+# Ansible Role: BasslineMnk
 
-[![CircleCI](https://circleci.com/gh/tiny-pilot/ansible-role-tinypilot.svg?style=svg)](https://circleci.com/gh/tiny-pilot/ansible-role-tinypilot)
+[![CircleCI](https://circleci.com/gh/bassline-mnk/ansible-role-basslinemnk.svg?style=svg)](https://circleci.com/gh/bassline-mnk/ansible-role-basslinemnk)
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](LICENSE)
 
-Ansible role for [TinyPilot KVM](https://github.com/tiny-pilot/tinypilot).
+Ansible role for [BasslineMnk KVM](https://github.com/bassline-mnk/basslinemnk).
 
 ## Role Variables
 
 Available variables are listed below, along with default values (see [defaults/main.yml](defaults/main.yml)):
 
 ```yaml
-tinypilot_group: tinypilot
-tinypilot_dir: /opt/tinypilot
-tinypilot_repo: https://github.com/tiny-pilot/tinypilot.git
-tinypilot_repo_branch: master
-tinypilot_interface: '127.0.0.1'
-tinypilot_port: 8000
-tinypilot_keyboard_interface: /dev/hidg0
+basslinemnk_group: basslinemnk
+basslinemnk_dir: /opt/basslinemnk
+basslinemnk_repo: https://github.com/bassline-mnk/basslinemnk.git
+basslinemnk_repo_branch: master
+basslinemnk_interface: '127.0.0.1'
+basslinemnk_port: 8000
+basslinemnk_keyboard_interface: /dev/hidg0
 ```
 
 ## Dependencies
 
-* [tiny-pilot.ustreamer](https://github.com/tiny-pilot/ansible-role-ustreamer)
-* [tiny-pilot.nginx](https://github.com/tiny-pilot/ansible-role-nginx)
+* [bassline-mnk.ustreamer](https://github.com/bassline-mnk/ansible-role-ustreamer)
+* [bassline-mnk.nginx](https://github.com/bassline-mnk/ansible-role-nginx)
 
 ## Example Playbook
 
@@ -31,13 +31,13 @@ tinypilot_keyboard_interface: /dev/hidg0
 ```yaml
 - hosts: all
   roles:
-    - role: ansible-role-tinypilot
+    - role: ansible-role-basslinemnk
 ```
 
 ### Running Example Playbook
 
 ```bash
-ansible-galaxy install git+https://github.com/tiny-pilot/ansible-role-tinypilot.git
+ansible-galaxy install git+https://github.com/bassline-mnk/ansible-role-basslinemnk.git
 ansible-playbook example.yml
 ```
 
@@ -47,4 +47,4 @@ MIT
 
 ## Author Information
 
-This role was created in 2020 by [Michael Lynch](http://mtlynch.io).
+This role was created in 2020 by [Adrian Griffin](http://adrian-griffin.io).

@@ -1,0 +1,20 @@
+[Unit]
+Description=BasslineMnk - RPi-based virtual KVM
+After=syslog.target network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User={{ basslinemnk_user }}
+WorkingDirectory={{ basslinemnk_dir }}
+ExecStart={{ basslinemnk_dir }}/venv/bin/python app/main.py
+Environment=HOST={{ basslinemnk_interface }}
+Environment=PORT={{ basslinemnk_port }}
+Environment=APP_SETTINGS_FILE={{ basslinemnk_app_settings_file }}
+{% if basslinemnk_enable_debug_logging %}
+Environment=DEBUG=1
+{% endif %}
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

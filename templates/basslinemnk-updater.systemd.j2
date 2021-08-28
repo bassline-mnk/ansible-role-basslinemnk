@@ -1,0 +1,18 @@
+[Unit]
+Description=BasslineMnk updater
+After=syslog.target network.target
+
+[Service]
+Type=oneshot
+User={{ basslinemnk_user }}
+WorkingDirectory={{ basslinemnk_dir }}
+ExecStart={{ basslinemnk_dir }}/venv/bin/python scripts/update-service
+Environment=PYTHONPATH={{ basslinemnk_dir }}/app
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=basslinemnk-update-svc
+TimeoutSec=900
+KillSignal=SIGKILL
+
+[Install]
+WantedBy=local-fs.target

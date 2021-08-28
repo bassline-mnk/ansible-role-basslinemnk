@@ -1,17 +1,17 @@
 ---
-- name: reload TinyPilot systemd config
+- name: reload BasslineMnk systemd config
   systemd:
-    name: tinypilot
+    name: basslinemnk
     daemon_reload: yes
 
-- name: restart TinyPilot service
+- name: restart BasslineMnk service
   service:
-    name: tinypilot
+    name: basslinemnk
     state: restarted
 
-- name: reload tinypilot updater systemd config
+- name: reload basslinemnk updater systemd config
   systemd:
-    name: tinypilot-updater
+    name: basslinemnk-updater
     daemon_reload: yes
     # Never run automatically.
     enabled: no
